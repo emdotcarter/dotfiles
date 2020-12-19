@@ -19,8 +19,9 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'gmist/vim-palette'
 
 " Python
-Plug 'Vimjas/vim-python-pep8-indent'
-Plug 'dense-analysis/ale'
+if executable('black')
+    Plug 'psf/black', { 'branch': 'stable'  }
+endif
 
 " Rust
 Plug 'rust-lang/rust.vim'
@@ -64,15 +65,9 @@ autocmd Filetype html setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 autocmd Filetype scss setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 autocmd Filetype javascript setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
 
-let g:ale_fixers = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'javascript': ['prettier_eslint'],
-\   'typescript': ['prettier_eslint'],
-\   'css': ['prettier_eslint'],
-\   'python': ['black'],
-\}
-let g:ale_python_auto_pipenv = 1
-let g:ale_fix_on_save = 1
+if exists(':Black')
+    autocmd BufWritePre *.py execute ':Black'
+end
 
 nnoremap j gj
 nnoremap k gk
